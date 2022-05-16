@@ -19,14 +19,19 @@ struct PlaceController: RouteCollection {
         places.put(use: self.change(req:))
         places.group(":placeID") { place in
             place.delete(use: self.delete(req:))
-        }
-        places.group(":placeID", "user") { place in
-            place.get(use: self.getUser(req:))
+            place.get(use: self.getPlace(req:))
+            place.get("user", use: self.getUser(req:))
         }
     }
     
     func index(req: Request) async throws -> [Place] {
-        try await Place.query(on: req.db).all()
+        return try await Place.query(on: req.db).all()
+    }
+    
+    func getPlace(req: Request) async throws -> Place {
+        guard let place = try await Place.find(req.parameters.get("placeID"), on: req.db) else { throw Abort(.notFound) }
+        
+        return place
     }
     
     func create(req: Request) async throws -> Place {

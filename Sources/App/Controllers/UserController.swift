@@ -17,10 +17,8 @@ struct UserController: RouteCollection {
         users.get(use: self.index(req:))
         users.post(use: self.create(req:))
         users.group(":userID") { user in
+            user.get("places", use: self.getPlaces(req:))
             user.delete(use: self.delete(req:))
-        }
-        users.group(":userID", "places") { user in
-            user.get(use: self.getPlaces(req:))
         }
     }
     
