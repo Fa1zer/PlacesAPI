@@ -25,13 +25,17 @@ final class Place: Model, Content {
     @Field(key: "place_description")
     var placeDescription: String
     
+    @Parent(key: "user_id")
+    var user: User
+    
     init() { }
     
-    init(id: UUID? = nil, name: String, street: String, placeDescription: String) {
+    init(id: UUID? = nil, name: String, street: String, placeDescription: String, userID: User.IDValue) {
         self.id = id
         self.name = name
         self.street = street
         self.placeDescription = placeDescription
+        self.$user.id = userID
     }
     
 }

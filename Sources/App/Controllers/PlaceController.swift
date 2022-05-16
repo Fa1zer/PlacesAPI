@@ -20,6 +20,9 @@ struct PlaceController: RouteCollection {
         places.group(":placeID") { place in
             place.delete(use: self.delete(req:))
         }
+        places.group(":placeID", "user") { place in
+            place.get(use: self.getUser(req:))
+        }
     }
     
     func index(req: Request) async throws -> [Place] {
@@ -27,7 +30,13 @@ struct PlaceController: RouteCollection {
     }
     
     func create(req: Request) async throws -> Place {
-        let place = try req.content.decode(Place.self)
+        let createPlace = try req.content.decode(CreatePlaceData.self)
+        let place = Place(
+            name: createPlace.name,
+            street: createPlace.street,
+            placeDescription: createPlace.placeDescription,
+            userID: createPlace.userID
+        )
         
         try await place.save(on: req.db)
         
@@ -53,6 +62,19 @@ struct PlaceController: RouteCollection {
         try await place.delete(on: req.db)
         
         return .ok
+    }
+    
+    func getUser(req: Request) async throws -> User {
+        guard let place = try await Place.find(req.parameters.get("placeID"), on: req.db) else { throw Abort(.notFound) }
+        
+        return try await place.$user.get(on: req.db)
+    }
+    
+    struct CreatePlaceData: Content {
+        let name: String
+        let street: String
+        let placeDescription: String
+        let userID: UUID
     }
     
 }
