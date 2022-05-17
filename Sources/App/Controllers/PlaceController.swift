@@ -42,6 +42,7 @@ struct PlaceController: RouteCollection {
             placeDescription: createPlace.placeDescription,
             lat: createPlace.lat,
             lon: createPlace.lon,
+            image: createPlace.image,
             userID: createPlace.userID
         )
         
@@ -59,6 +60,7 @@ struct PlaceController: RouteCollection {
         oldPlace?.placeDescription = newPlace.placeDescription
         oldPlace?.lat = newPlace.lat
         oldPlace?.lon = newPlace.lon
+        oldPlace?.image = newPlace.image
         
         try await oldPlace?.save(on: req.db)
         
@@ -85,6 +87,7 @@ struct PlaceController: RouteCollection {
         let placeDescription: String
         let lat: Float
         let lon: Float
+        let image: Data?
         let userID: UUID
     }
     
