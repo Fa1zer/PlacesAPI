@@ -19,14 +19,19 @@ struct PlaceController: RouteCollection {
         places.put(use: self.change(req:))
         places.group(":placeID") { place in
             place.delete(use: self.delete(req:))
-        }
-        places.group(":placeID", "user") { place in
-            place.get(use: self.getUser(req:))
+            place.get(use: self.getPlace(req:))
+            place.get("user", use: self.getUser(req:))
         }
     }
     
     func index(req: Request) async throws -> [Place] {
-        try await Place.query(on: req.db).all()
+        return try await Place.query(on: req.db).all()
+    }
+    
+    func getPlace(req: Request) async throws -> Place {
+        guard let place = try await Place.find(req.parameters.get("placeID"), on: req.db) else { throw Abort(.notFound) }
+        
+        return place
     }
     
     func create(req: Request) async throws -> Place {
@@ -35,6 +40,9 @@ struct PlaceController: RouteCollection {
             name: createPlace.name,
             street: createPlace.street,
             placeDescription: createPlace.placeDescription,
+            lat: createPlace.lat,
+            lon: createPlace.lon,
+            image: createPlace.image,
             userID: createPlace.userID
         )
         
@@ -50,6 +58,9 @@ struct PlaceController: RouteCollection {
         oldPlace?.name = newPlace.name
         oldPlace?.street = newPlace.street
         oldPlace?.placeDescription = newPlace.placeDescription
+        oldPlace?.lat = newPlace.lat
+        oldPlace?.lon = newPlace.lon
+        oldPlace?.image = newPlace.image
         
         try await oldPlace?.save(on: req.db)
         
@@ -74,6 +85,9 @@ struct PlaceController: RouteCollection {
         let name: String
         let street: String
         let placeDescription: String
+        let lat: Float
+        let lon: Float
+        let image: Data?
         let userID: UUID
     }
     

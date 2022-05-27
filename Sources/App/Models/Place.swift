@@ -25,16 +25,28 @@ final class Place: Model, Content {
     @Field(key: "place_description")
     var placeDescription: String
     
+    @Field(key: "lat")
+    var lat: Float
+    
+    @Field(key: "lon")
+    var lon: Float
+    
+    @OptionalField(key: "image")
+    var image: Data?
+    
     @Parent(key: "user_id")
     var user: User
     
     init() { }
     
-    init(id: UUID? = nil, name: String, street: String, placeDescription: String, userID: User.IDValue) {
+    init(id: UUID? = nil, name: String, street: String, placeDescription: String, lat: Float, lon: Float, image: Data? = nil, userID: User.IDValue) {
         self.id = id
         self.name = name
         self.street = street
         self.placeDescription = placeDescription
+        self.lat = lat
+        self.lon = lon
+        self.image = image
         self.$user.id = userID
     }
     
