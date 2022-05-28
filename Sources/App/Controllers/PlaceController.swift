@@ -13,7 +13,7 @@ struct PlaceController: RouteCollection {
     
     func boot(routes: RoutesBuilder) throws {
         let places = routes.grouped("places")
-        
+                
         places.get(use: self.index(req:))
         places.post("new", use: self.create(req:))
         places.put("redact", use: self.change(req:))
@@ -91,16 +91,17 @@ struct PlaceController: RouteCollection {
 }
 
 struct CreatePlaceData: Content {
+    
     let id: UUID?
     let name: String
     let street: String
     let placeDescription: String
     let lat: Float
     let lon: Float
-    let image: Data?
+    let image: String?
     let userID: UUID
     
-    init(id: UUID? = nil, name: String, street: String, placeDescription: String, lat: Float, lon: Float, image: Data? = nil, userID: UUID) {
+    init(id: UUID? = nil, name: String, street: String, placeDescription: String, lat: Float, lon: Float, image: String? = nil, userID: UUID) {
         self.id = id
         self.name = name
         self.street = street
@@ -110,4 +111,5 @@ struct CreatePlaceData: Content {
         self.image = image
         self.userID = userID
     }
+    
 }
