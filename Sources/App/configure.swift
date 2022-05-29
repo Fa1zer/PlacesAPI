@@ -16,7 +16,7 @@ public func configure(_ app: Application) throws {
     ), as: .psql)
     
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
-    app.routes.defaultMaxBodySize = "20mb"
+    app.routes.defaultMaxBodySize = "50mb"
 
     app.migrations.add(CreatePlace())
     app.migrations.add(CreateUser())
