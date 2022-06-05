@@ -32,14 +32,14 @@ final class Place: Model, Content {
     var lon: Float
     
     @OptionalField(key: "image")
-    var image: Data?
+    var image: String?
     
     @Parent(key: "user_id")
     var user: User
     
     init() { }
     
-    init(id: UUID? = nil, name: String, street: String, placeDescription: String, lat: Float, lon: Float, image: Data? = nil, userID: User.IDValue) {
+    init(id: UUID? = nil, name: String, street: String, placeDescription: String, lat: Float, lon: Float, image: String? = nil, userID: User.IDValue) {
         self.id = id
         self.name = name
         self.street = street

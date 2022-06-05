@@ -18,7 +18,7 @@ struct CreatePlace: AsyncMigration {
             .field("place_description", .string, .required)
             .field("lat", .float, .required)
             .field("lon", .float, .required)
-            .field("image", .data)
+            .field("image", .string)
             .field("user_id", .uuid, .required)
             .create()
     }
