@@ -1,4 +1,4 @@
-# ****Pet Project PlacesApi****
+# ****APlace API****
 
 #### Api проекта [PlacesMap](https://github.com/Fa1zer/PlacesMap).
 #### Сделан при помощи фреймворка [Vapor](https://github.com/vapor/vapor).
